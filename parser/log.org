@@ -1,0 +1,15 @@
+#+title: xml Parser
+
+* TODO Have a sample urdf file for testing
+* TODO Have a =parser.py= file implementing =xml.etree.ElementTree=
+- Can python load a urdf file?
+  Found =urdfpy= package
+* TODO Data grouped by different nodes [0%]
+** TODO create abstract classes
+** TODO coming soon
+** TODO dfc
+
+* LOG
+** July 22, 2023
+- Download a bunch of software including necessary software required to run ROS2 smoothly on m1 mac.
+  rviz2 can visualize urdf now!

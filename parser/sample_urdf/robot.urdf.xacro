@@ -1,0 +1,11 @@
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro"  name="a4">
+  <xacro:include filename="./robot.xacro" />
+  <xacro:arg name="robot_prefix" default="arm"/>
+  <xacro:arg name="parent_frame" default="world"/>
+  <xacro:a4_robot prefix="$(arg robot_prefix)"/>
+  <link name="$(arg parent_frame)"/>
+  <joint name="robot_base" type="fixed">
+    <parent link="$(arg parent_frame)"/>
+    <child link="$(arg robot_prefix)_link_0"/>
+  </joint>
+</robot>
