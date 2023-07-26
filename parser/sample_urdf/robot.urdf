@@ -33,15 +33,15 @@
     </visual>
   </link>
   <link name="arm_link_2">
-    <!-- <taichi> -->
-    <!--   <bodytype type='Soft'/> -->
-    <!-- </taichi> -->
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0.25"/>
       <geometry>
         <cylinder length="0.5" radius="0.1"/>
       </geometry>
       <material name="cyan">
+        <taichi>
+          <materialproperty filename="/home/guanyunliu/Desktop/ros_taichi/parser/sample_urdf/material.yaml"/>
+        </taichi>
         <color rgba="0 1.0 1 0.5"/>
       </material>
     </visual>

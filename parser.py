@@ -11,4 +11,7 @@ robot = URDF.load(filename)
 for l in robot.links:
     if l.taichi is not None:
         print(l.taichi.bodytype.body_type)
+for m in robot.materials:
+    if m.taichi is not None:
+        print(m.taichi.materialproperty.filename)
 robot.show()
