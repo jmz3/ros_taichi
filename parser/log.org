@@ -10,8 +10,17 @@
 ** TODO create abstract classes
 ** TODO coming soon
 ** TODO dfc
-* TODO Modify =urdfpy= package [0%]
+* TODO Modify =urdfpy= package [33%]
+** DONE Learn git submodule
+- Add submodule in the main project
+  1. Go to the root of the main project
+  2. =git submodule add <submodule_url>=
+     e.g. =git submodule add https://github.com/JimLiu35/urdfpy.git=
+  3. To clone the main project with the submodule use =git clone <main project url> --recurse-submodules=
 ** TODO =urdf.py=, create a =Robotype= abstract class that only have two values, either "Rigid" or "Soft"
+- Modify =urdfpy/__init__.py=. Add class =Taichi, BodyType, MaterialProperty= into (a) =import=, (b) =__all__=
+- Extend =urdfpy/urdf.py=. Add class =Taichi=, =BodyType=, =MaterialProperty=
+
 ** TODO =urdf.py=, modify =Link= class's =_Element= variable, and add {'robotype': (Robotype, False, False)}, which means the Robotype class is NOT required, and is NOT multiple.
 
 * DONE Ask Jiaming to add an additional collaborator JimLgy
@@ -40,3 +49,5 @@ Could have a tag under <material> that allows users to specify a yaml file conta
 ** July 25, 2023
 - write a simple zsh script.
   run =tcs filename.urdf=, to load the urdf file into parser.py
+** July 26, 2023
+-

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import sys
-from .urdfpy import URDF
+from urdfpy.urdfpy.urdf import URDF
 
 
 # class Robot(URDF):
@@ -9,5 +9,6 @@ from .urdfpy import URDF
 filename = sys.argv[1]
 robot = URDF.load(filename)
 for l in robot.links:
-    print(l.taichi)
+    if l.taichi is not None:
+        print(l.taichi.bodytype.body_type)
 robot.show()

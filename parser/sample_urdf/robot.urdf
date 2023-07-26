@@ -5,6 +5,9 @@
 <!-- =================================================================================== -->
 <robot name="a4">
   <link name="arm_link_0">
+    <taichi>
+      <bodytype type='rigid'/>
+    </taichi>
     <visual>
       <origin xyz="0 0 0.25"/>
       <geometry>
@@ -16,6 +19,9 @@
     </visual>
   </link>
   <link name="arm_link_1">
+    <taichi>
+      <bodytype type='soft'/>
+    </taichi>
     <visual>
       <origin xyz="0 0 0.25"/>
       <geometry>
@@ -27,6 +33,9 @@
     </visual>
   </link>
   <link name="arm_link_2">
+    <!-- <taichi> -->
+    <!--   <bodytype type='Soft'/> -->
+    <!-- </taichi> -->
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0.25"/>
       <geometry>
