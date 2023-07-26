@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-import importlib.resources as iplib
+import sys
+from urdfpy import URDF
 
-filename = "robot.urdf"
-dh = iplib.read_text()
+
+# class Robot(URDF):
+
+
+filename = sys.argv[1]
+robot = URDF.load(filename)
+robot.show()

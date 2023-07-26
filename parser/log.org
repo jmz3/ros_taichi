@@ -1,15 +1,42 @@
 #+title: xml Parser
 
-* TODO Have a sample urdf file for testing
+* DONE Have a sample urdf file for testing
+* DONE Have a terminal command that take urdf's filename as an input and parser it with a python script.
 * TODO Have a =parser.py= file implementing =xml.etree.ElementTree=
 - Can python load a urdf file?
   Found =urdfpy= package
+  This package works! But may need some modification to adapt it to our project.
 * TODO Data grouped by different nodes [0%]
 ** TODO create abstract classes
 ** TODO coming soon
 ** TODO dfc
+* TODO Modify =urdfpy= package [0%]
+** TODO =urdf.py=, create a =Robotype= abstract class that only have two values, either "Rigid" or "Soft"
+** TODO =urdf.py=, modify =Link= class's =_Element= variable, and add {'robotype': (Robotype, False, False)}, which means the Robotype class is NOT required, and is NOT multiple.
+
+* DONE Ask Jiaming to add an additional collaborator JimLgy
+
+* Environmental setting
+** Install [[https://urdfpy.readthedocs.io/en/latest/install/index.html][urdfpy]] package
+#+begin_src shell
+mamba install urdfpy
+# pip install urdfpy
+#+end_src
+
+* Problems
+** Material
+For more practical simulation, especially related to soft body robot, I don't think only specify soft or rigid is good enough. Users need to find somewhere to enter material properties. For example, material strength, density, young's modulus, etc.
+
+Could have a tag under <material> that allows users to specify a yaml file containing all the material properties.
 
 * LOG
 ** July 22, 2023
 - Download a bunch of software including necessary software required to run ROS2 smoothly on m1 mac.
   rviz2 can visualize urdf now!
+** July 23, 2023
+- =urdypy= is installed!
+  Error 1: ImportError: cannot import name 'Mapping' from 'collections'
+  Solution: The problem persists if I installed urdfpy with pip. However, it is resolved automatically once I used =mamba install urdfpy=. So, it is likely that some dependencies are missing using pip install.
+** July 25, 2023
+- write a simple zsh script.
+  run =tcs filename.urdf=, to load the urdf file into parser.py
