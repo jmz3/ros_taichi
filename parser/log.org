@@ -22,6 +22,7 @@
 - Extend =urdfpy/urdf.py=. Add class =Taichi=, =BodyType=, =MaterialProperty=
 
 ** TODO =urdf.py=, modify =Link= class's =_Element= variable, and add {'robotype': (Robotype, False, False)}, which means the Robotype class is NOT required, and is NOT multiple.
+* TODO Search how to use =__init__.py= to import modules from other directories
 
 * DONE Ask Jiaming to add an additional collaborator JimLgy
 
