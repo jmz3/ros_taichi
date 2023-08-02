@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 import sys
-from urdfpy.urdfpy.urdf import URDF
-
-
-# class Robot(URDF):
-
+# import ros_taichi.third_parties.urdfpy.urdfpy.URDF
+from ..third_parties.urdfpy.urdfpy import URDF
 
 filename = sys.argv[1]
 robot = URDF.load(filename)

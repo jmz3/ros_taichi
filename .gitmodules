@@ -1,3 +1,3 @@
 [submodule "urdfpy"]
-	path = urdfpy
+	path = ros_taichi/third_parties/urdfpy
 	url = https://github.com/JimLiu35/urdfpy.git
