@@ -38,3 +38,9 @@ To run the parser example, go to the `sample_urdf` directory and then run
 python -m ros_taichi.scripts.parser robot.urdf
 ```
 
+# Using Trimesh for loading meshes
+## Installation
+For minial installation, you can use the following command to install `trimesh`:
+``` sh
+pip install trimesh
+```
