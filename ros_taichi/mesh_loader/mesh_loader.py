@@ -40,6 +40,10 @@ class LoadMesh(ABC):
     def get_faces(self) -> ti.Vector.field:
         pass
 
+    @abstractmethod
+    def get_normals(self) -> ti.Vector.field:
+        pass
+
 
 class LoadSTL(LoadMesh):
     """
@@ -51,7 +55,8 @@ class LoadSTL(LoadMesh):
 
     Returns:
     --------
-        mesh (trimesh): mesh object
+        mesh (trimesh): mesh object in trimesh format
+        mesh
 
     """
 
@@ -75,16 +80,13 @@ class LoadSTL(LoadMesh):
     def load(self) -> tm.Trimesh:
         """
         Load the mesh from the given path
-
-        Params:
-        -------
-            None
-
-        Returns:
-        --------
-            mesh (trimesh): mesh object that contains vertices, faces, and normals
+        The mesh is loaded in trimesh format
+        Meanwhile, the vertices, faces, and normals are stored in taichi fields
         """
         self.mesh = tm.load_mesh(self.path)
+        self.get_vertices()
+        self.get_faces()
+        self.get_normals()
 
     def get_vertices(self) -> ti.Vector.field:
         src_vertices = np.asarray(self.mesh.vertices, dtype=np.float32)
@@ -106,7 +108,7 @@ class LoadSTL(LoadMesh):
 
         return self.faces
 
-    def get_normal(self) -> ti.Vector.field:
+    def get_normals(self) -> ti.Vector.field:
         src_normals = np.asarray(self.mesh.vertex_normals, dtype=np.float32)
         if src_normals.shape[1] != 3:
             raise ValueError("The number of normals should be 3.")
