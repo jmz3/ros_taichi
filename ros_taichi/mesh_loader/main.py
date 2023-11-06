@@ -34,7 +34,8 @@ surf_show.from_numpy(surf_np.flatten())
 window = ti.ui.Window("parse_vtk", (1024, 1024), vsync=True)
 canvas = window.get_canvas()
 scene = ti.ui.Scene()
-camera = ti.ui.make_camera()
+# camera = ti.ui.make_camera()
+camera = ti.ui.Camera()
 
 # initial camera position
 camera.position(0.5, 1.0, 1.95)

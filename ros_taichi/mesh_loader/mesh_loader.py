@@ -138,9 +138,9 @@ if __name__ == "__main__":
     normals = ti.Vector.field(n=3, dtype=ti.f32, shape=n_faces)
     normals.from_numpy(src_normals)
 
-    for face in mesh.faces:
-        for vertex in face:
-            print(vertex) if vertex > n_vertices else None
+    # for face in mesh.faces:
+    #     for vertex in face:
+    #         print(vertex) if vertex > n_vertices else None
 
     # Taichi GUI
     window = ti.ui.Window("Mesh Loader", res=(960, 960), vsync=True)
@@ -160,3 +160,27 @@ if __name__ == "__main__":
     x_axis = ti.Vector.field(3, dtype=float, shape=2)
     y_axis = ti.Vector.field(3, dtype=float, shape=2)
     z_axis = ti.Vector.field(3, dtype=float, shape=2)
+
+    while window.running:
+        camera.track_user_inputs(window, movement_speed=0.03, hold_key=ti.ui.SPACE)
+        scene.set_camera(camera)
+        # scene.ambient_light((0.1, 0.1, 0.1))
+        # scene.point_light(pos=[0.4, 0.4, 0.4], color=[0.8, 0.8, 0.8])
+
+        camera.up(0, 0, 1)
+
+        scene.lines(x_axis, color=(1, 0, 0), width=1)
+        scene.lines(y_axis, color=(0, 1, 0), width=1)
+        scene.lines(z_axis, color=(0, 0, 1), width=1)
+
+        # scene.mesh(vertices=vertices)
+        # scene.particles(vertices, radius=0.001, color=(1, 1, 1))
+        scene.mesh(
+            vertices=vertices,
+            indices=faces,
+            normals=normals,
+            color=(0, 0, 0),
+            show_wireframe=True,
+        )
+        canvas.scene(scene)
+        window.show()
