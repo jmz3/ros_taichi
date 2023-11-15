@@ -7,4 +7,3 @@ if __name__ == "__main__":
     stl = LoadSTL("model/Bunny.stl")
 
     v = stl.get_vertices()
-    print(v.shape)
