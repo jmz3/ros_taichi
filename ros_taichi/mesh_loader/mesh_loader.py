@@ -176,6 +176,8 @@ class LoadDAE(LoadMesh):
         cur_path = os.path.dirname(os.path.abspath(__file__))
         file_name = os.path.join(cur_path, path)
 
+        self.scene = None
+
         super().__init__(file_name)
 
     def load(self) -> tm.Trimesh:
@@ -190,7 +192,9 @@ class LoadDAE(LoadMesh):
         --------
             mesh (trimesh): mesh object that contains vertices, faces, and normals
         """
-        self.mesh = tm.load_mesh(self.path)
+        self.mesh = tm.load(self.path, force="mesh")
+        self.scene = tm.load(self.path)
+
         self.__load_vertices()
         self.__load_faces()
         self.__load_normals()
@@ -248,6 +252,18 @@ class LoadDAE(LoadMesh):
             normals (ti.Vector.field): normals in taichi fields
         """
         return self.normals
+
+    def get_scene(self) -> tm.Scene:
+        """
+        Get the scene object
+
+        Returns:
+        --------
+            scene (trimesh.Scene): scene object
+        """
+        return self.scene
+
+    # TODO: functions to get the attributes of the scene object, such as mesh names, mesh geometries, lights, cameras, etc.
 
 
 if __name__ == "__main__":
