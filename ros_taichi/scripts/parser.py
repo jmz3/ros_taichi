@@ -45,7 +45,7 @@ for l in robot.links:
 for m in robot.materials:
     if m.taichi is not None:
         print(m.taichi.materialproperty.filename)
-robot.show()
+# robot.show()
 print(robot.link_map)
 # Use Taichi Rendering to visualize the ur5 robot
 tm.util.attach_to_log()
@@ -83,7 +83,7 @@ camera.lookat(0, 0, 0)
 camera.up(0, 0, 1)
 scene.set_camera(camera)
 
-origin = [0.0, 0.0, 0.0]
+origin = [5.0, 0.0, 8.0]
 axis_length = 0.5
 x_axis = ti.Vector.field(3, dtype=float, shape=2)
 y_axis = ti.Vector.field(3, dtype=float, shape=2)
