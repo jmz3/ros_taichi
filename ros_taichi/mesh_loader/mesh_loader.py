@@ -68,9 +68,13 @@ class LoadSTL(LoadMesh):
         -------
             path (str): path to the mesh file
 
-        Returns:
+        Methods:
         --------
-            mesh (trimesh): mesh object
+            load (None): load the mesh from the given path
+            get_vertices (ti.Vector.field): get vertices in taichi fields
+            get_faces (ti.Vector.field): get faces in taichi fields
+            get_normals (ti.Vector.field): get normals in taichi fields
+
         """
         cur_path = os.path.dirname(os.path.abspath(__file__))
         file_name = os.path.join(cur_path, path)
@@ -84,11 +88,11 @@ class LoadSTL(LoadMesh):
         Meanwhile, the vertices, faces, and normals are stored in taichi fields
         """
         self.mesh = tm.load_mesh(self.path)
-        self.get_vertices()
-        self.get_faces()
-        self.get_normals()
+        self.__load_vertices()
+        self.__load_faces()
+        self.__load_normals()
 
-    def get_vertices(self) -> ti.Vector.field:
+    def __load_vertices(self):
         src_vertices = np.asarray(self.mesh.vertices, dtype=np.float32)
         if src_vertices.shape[1] != 3:
             raise ValueError("The number of vertices should be 3.")
@@ -96,9 +100,7 @@ class LoadSTL(LoadMesh):
         self.vertices = ti.Vector.field(n=3, dtype=ti.f32, shape=src_vertices.shape[0])
         self.vertices.from_numpy(src_vertices)
 
-        return self.vertices
-
-    def get_faces(self) -> ti.Vector.field:
+    def __load_faces(self):
         src_faces = np.asarray(self.mesh.faces, dtype=np.int32)
         if src_faces.shape[1] != 3:
             raise ValueError("The number of faces should be 3.")
@@ -106,9 +108,7 @@ class LoadSTL(LoadMesh):
         self.faces = ti.Vector.field(n=3, dtype=ti.i32, shape=src_faces.shape[0])
         self.faces.from_numpy(src_faces)
 
-        return self.faces
-
-    def get_normals(self) -> ti.Vector.field:
+    def __load_normals(self):
         src_normals = np.asarray(self.mesh.vertex_normals, dtype=np.float32)
         if src_normals.shape[1] != 3:
             raise ValueError("The number of normals should be 3.")
@@ -116,6 +116,34 @@ class LoadSTL(LoadMesh):
         self.normals = ti.Vector.field(n=3, dtype=ti.f32, shape=src_normals.shape[0])
         self.normals.from_numpy(src_normals)
 
+    def get_vertices(self) -> ti.Vector.field:
+        """
+        Get vertices in taichi fields
+
+        Returns:
+        --------
+            vertices (ti.Vector.field): vertices in taichi fields
+        """
+        return self.vertices
+
+    def get_faces(self) -> ti.Vector.field:
+        """
+        Get faces in taichi fields
+
+        Returns:
+        --------
+            faces (ti.Vector.field): faces in taichi fields
+        """
+        return self.faces
+
+    def get_normals(self) -> ti.Vector.field:
+        """
+        Get normals in taichi fields
+
+        Returns:
+        --------
+            normals (ti.Vector.field): normals in taichi fields
+        """
         return self.normals
 
 
@@ -148,11 +176,13 @@ class LoadDAE(LoadMesh):
         cur_path = os.path.dirname(os.path.abspath(__file__))
         file_name = os.path.join(cur_path, path)
 
+        self.scene = None
+
         super().__init__(file_name)
 
     def load(self) -> tm.Trimesh:
         """
-        Load the mesh from the given path
+        Load the mesh from the given path, including vertices, faces, and normals
 
         Params:
         -------
@@ -162,9 +192,14 @@ class LoadDAE(LoadMesh):
         --------
             mesh (trimesh): mesh object that contains vertices, faces, and normals
         """
-        self.mesh = tm.load_mesh(self.path)
+        self.mesh = tm.load(self.path, force="mesh")
+        self.scene = tm.load(self.path)
 
-    def get_vertices(self) -> ti.Vector.field:
+        self.__load_vertices()
+        self.__load_faces()
+        self.__load_normals()
+
+    def __load_vertices(self):
         src_vertices = np.asarray(self.mesh.vertices, dtype=np.float32)
         if src_vertices.shape[1] != 3:
             raise ValueError("The number of vertices should be 3.")
@@ -172,9 +207,7 @@ class LoadDAE(LoadMesh):
         self.vertices = ti.Vector.field(n=3, dtype=ti.f32, shape=src_vertices.shape[0])
         self.vertices.from_numpy(src_vertices)
 
-        return self.vertices
-
-    def get_faces(self) -> ti.Vector.field:
+    def __load_faces(self):
         src_faces = np.asarray(self.mesh.faces, dtype=np.int32)
         if src_faces.shape[1] != 3:
             raise ValueError("The number of faces should be 3.")
@@ -182,9 +215,7 @@ class LoadDAE(LoadMesh):
         self.faces = ti.Vector.field(n=3, dtype=ti.i32, shape=src_faces.shape[0])
         self.faces.from_numpy(src_faces)
 
-        return self.faces
-
-    def get_normal(self) -> ti.Vector.field:
+    def __load_normals(self):
         src_normals = np.asarray(self.mesh.vertex_normals, dtype=np.float32)
         if src_normals.shape[1] != 3:
             raise ValueError("The number of normals should be 3.")
@@ -192,7 +223,47 @@ class LoadDAE(LoadMesh):
         self.normals = ti.Vector.field(n=3, dtype=ti.f32, shape=src_normals.shape[0])
         self.normals.from_numpy(src_normals)
 
+    def get_vertices(self) -> ti.Vector.field:
+        """
+        Get vertices in taichi fields
+
+        Returns:
+        --------
+            vertices (ti.Vector.field): vertices in taichi fields
+        """
+        return self.vertices
+
+    def get_faces(self) -> ti.Vector.field:
+        """
+        Get faces in taichi fields
+
+        Returns:
+        --------
+            faces (ti.Vector.field): faces in taichi fields
+        """
+        return self.faces
+
+    def get_normals(self) -> ti.Vector.field:
+        """
+        Get normals in taichi fields
+
+        Returns:
+        --------
+            normals (ti.Vector.field): normals in taichi fields
+        """
         return self.normals
+
+    def get_scene(self) -> tm.Scene:
+        """
+        Get the scene object
+
+        Returns:
+        --------
+            scene (trimesh.Scene): scene object
+        """
+        return self.scene
+
+    # TODO: functions to get the attributes of the scene object, such as mesh names, mesh geometries, lights, cameras, etc.
 
 
 if __name__ == "__main__":
@@ -202,34 +273,11 @@ if __name__ == "__main__":
     tm.util.attach_to_log()
     ti.init(arch=ti.cpu)
 
-    # # load a mesh
-    # cur_path = os.path.dirname(os.path.abspath(__file__))
-    # file_name = os.path.join(cur_path, "model/Bunny.stl")
-    # mesh = tm.load_mesh(file_name)
-
-    # src_vertices = np.asarray(mesh.vertices / 100, dtype=np.float32)
-    # src_faces = np.asarray(mesh.faces, dtype=np.int32)
-    # src_normals = np.asarray(mesh.vertex_normals, dtype=np.float32)
-
-    # assert src_vertices.shape[1] == 3
-    # assert src_faces.shape[1] == 3
-
-    # # Get the number of vertices and faces
-    # n_vertices = src_vertices.shape[0]
-    # n_faces = src_faces.shape[0]
-
-    # vertices = ti.Vector.field(n=3, dtype=ti.f32, shape=n_vertices)
-    # vertices.from_numpy(src_vertices)
-    # faces = ti.Vector.field(n=3, dtype=ti.i32, shape=n_faces)
-    # faces.from_numpy(src_faces)
-    # normals = ti.Vector.field(n=3, dtype=ti.f32, shape=n_faces)
-    # normals.from_numpy(src_normals)
-
     # Test LoadSTL
-    stl = LoadSTL("model/Bunny.stl")
-    vertices = stl.get_vertices()
-    faces = stl.get_faces()
-    normals = stl.get_normal()
+    stl = LoadSTL("model/forearm.stl")
+    vertices = stl.vertices
+    faces = stl.faces
+    normals = stl.normals
 
     # for face in faces:
     #     for vertex in face:
@@ -243,7 +291,7 @@ if __name__ == "__main__":
     scene = ti.ui.Scene()
     camera = ti.ui.Camera()
     camera = ti.ui.Camera()
-    camera.position(-1, -2, 3)  # x, y, z
+    camera.position(-1, -1, 1)  # x, y, z
     camera.lookat(0, 0, 0)
     camera.up(0, 0, 1)
     scene.set_camera(camera)
@@ -253,3 +301,23 @@ if __name__ == "__main__":
     x_axis = ti.Vector.field(3, dtype=float, shape=2)
     y_axis = ti.Vector.field(3, dtype=float, shape=2)
     z_axis = ti.Vector.field(3, dtype=float, shape=2)
+
+    while window.running:
+        camera.track_user_inputs(window, movement_speed=0.03, hold_key=ti.ui.SPACE)
+        scene.set_camera(camera)
+
+        scene.lines(x_axis, color=(1, 0, 0), width=1)
+        scene.lines(y_axis, color=(0, 1, 0), width=1)
+        scene.lines(z_axis, color=(0, 0, 1), width=1)
+
+        # scene.mesh(vertices=vertices)
+        # scene.particles(vertices, radius=0.001, color=(1, 1, 1))
+        scene.mesh(
+            vertices=vertices,
+            indices=faces,
+            normals=normals,
+            color=(0, 0, 0),
+            show_wireframe=True,
+        )
+        canvas.scene(scene)
+        window.show()
