@@ -37,7 +37,7 @@ if __name__ == "__main__":
     canvas.set_background_color((1, 1, 1))
     scene = ti.ui.Scene()
     camera = ti.ui.Camera()
-    camera = ti.ui.Camera()
+
     camera.position(-1, -1, 1)  # x, y, z
     camera.lookat(0, 0, 0)
     camera.up(0, 0, 1)
